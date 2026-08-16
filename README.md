@@ -2,7 +2,7 @@
 
 A modern, responsive, and high-performance developer portfolio showcasing machine learning architectures, explainable AI pipelines, computer vision systems, and full-stack web applications.
 
-🌐 **Live Demo:** [https://mritunjay065.github.io/portfolio/](https://mritunjay065.github.io/portfolio/)
+🌐 **Live Demo:** [https://portfolio-iota-gray-25.vercel.app/](https://portfolio-iota-gray-25.vercel.app/)
 
 ---
 
