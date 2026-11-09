@@ -28,6 +28,16 @@ A modern, responsive, and high-performance developer portfolio showcasing machin
 
 ---
 
+## 💼 Experience & Internships
+
+- **AI & Machine Learning Intern** — *Indian Institute of Computing and Technology (IICT), New Delhi* (June 2026 – July 2026)
+  - 45-day summer internship completed with distinction (`Cert No: IICT/2026/20008983`).
+  - Developed **AI-Powered Fake News Detection Using Text Classification** and **AI-Driven Phishing Email Detection Using NLP**.
+- **Frontend Developer** — *TechLearn Solutions, Jaipur* (Jan 2026 – May 2026)
+  - Architected high-performance, responsive React components and RESTful API integrations.
+
+---
+
 ## 🏆 Honors, Patent & Leadership
 
 - **Published Indian Patent**: *AI-Based System and Device for Personalized Nutrition and Predictive Food Safety Assessment*, published by the Intellectual Property Office, Government of India.
