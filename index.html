@@ -1313,7 +1313,6 @@
           if (!piece.classList.contains('assembled')) {
             piece.classList.add('assembled');
             piece.classList.add('snap-flash');
-            playSnapSound();
             setTimeout(() => piece.classList.remove('snap-flash'), 650);
           }
         } else {
@@ -1332,45 +1331,13 @@
 
     // =============================================================
     // AUDIO ENGINE (PIRATES OF THE CARIBBEAN SOUNDTRACK)
+    // Pure soundtrack only - no synthetic pop/bubble SFX
     // =============================================================
     const bgAudio = new Audio('pirates_of_caribbean.mp3');
     bgAudio.loop = true;
     bgAudio.volume = 0.55;
 
     let isPlaying = false;
-
-    // Tactile sound effect on puzzle snap using lightweight Web Audio oscillator
-    let audioCtx = null;
-    function playSnapSound() {
-      if (!isPlaying) return;
-      try {
-        if (!audioCtx) {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          audioCtx = new AudioContextClass();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-        const now = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        const note = 587.33 + Math.random() * 200; // D5 range
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(note, now);
-        osc.frequency.exponentialRampToValueAtTime(note * 1.5, now + 0.08);
-
-        gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.linearRampToValueAtTime(0.05, now + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        osc.start(now);
-        osc.stop(now + 0.22);
-      } catch (err) {}
-    }
 
     // Toggle soundtrack
     function toggleAudio() {
