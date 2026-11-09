@@ -1379,7 +1379,7 @@
 
     // =============================================================
     // AUDIO ENGINE (PIRATES OF THE CARIBBEAN SOUNDTRACK)
-    // Pure soundtrack only - no synthetic pop/bubble SFX
+    // Autoplay instantly on visit with multi-event fallback
     // =============================================================
     const bgAudio = new Audio('pirates_of_caribbean.mp3');
     bgAudio.loop = true;
@@ -1387,46 +1387,55 @@
 
     let isPlaying = false;
 
-    // Toggle soundtrack
-    function toggleAudio() {
+    function updateAudioUI(playing) {
+      isPlaying = playing;
       const bars = document.querySelectorAll('.sound-bar');
       const label = document.getElementById('audio-btn-label');
+      bars.forEach(b => {
+        if (playing) b.classList.remove('paused');
+        else b.classList.add('paused');
+      });
+      if (label) label.textContent = playing ? 'Mute Music' : 'Play Soundtrack';
+    }
 
-      if (!isPlaying) {
-        bgAudio.play().then(() => {
-          isPlaying = true;
-          bars.forEach(b => b.classList.remove('paused'));
-          if (label) label.textContent = 'Mute Music';
-        }).catch(err => {
-          console.log('Audio playback waiting for gesture:', err);
+    function startMusic() {
+      if (isPlaying) return;
+      const playPromise = bgAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          updateAudioUI(true);
+          cleanupAutoPlayListeners();
+        }).catch(() => {
+          // Browser autoplay restriction waiting for first user gesture
         });
+      }
+    }
+
+    // Toggle soundtrack button
+    function toggleAudio() {
+      if (!isPlaying) {
+        bgAudio.play().then(() => updateAudioUI(true)).catch(() => {});
       } else {
         bgAudio.pause();
-        isPlaying = false;
-        bars.forEach(b => b.classList.add('paused'));
-        if (label) label.textContent = 'Play Soundtrack';
+        updateAudioUI(false);
       }
     }
 
-    // Auto-enable audio on first user gesture
-    let hasInteracted = false;
-    function enableAudioOnFirstGesture() {
-      if (hasInteracted) return;
-      hasInteracted = true;
-      if (!isPlaying) {
-        bgAudio.play().then(() => {
-          isPlaying = true;
-          const bars = document.querySelectorAll('.sound-bar');
-          const label = document.getElementById('audio-btn-label');
-          bars.forEach(b => b.classList.remove('paused'));
-          if (label) label.textContent = 'Mute Music';
-        }).catch(() => {});
-      }
-      window.removeEventListener('click', enableAudioOnFirstGesture);
-      window.removeEventListener('keydown', enableAudioOnFirstGesture);
+    // Try playing immediately as soon as script runs & on DOM load
+    startMusic();
+    document.addEventListener('DOMContentLoaded', startMusic);
+    window.addEventListener('load', startMusic);
+
+    // Modern browsers strictly require user interaction (click, scroll, mouse movement, touch, or key)
+    // Listen for the very first micro-gesture to start immediately
+    const gestureEvents = ['pointerdown', 'click', 'scroll', 'touchstart', 'keydown', 'mousemove', 'wheel'];
+    function onFirstGesture() {
+      startMusic();
     }
-    window.addEventListener('click', enableAudioOnFirstGesture);
-    window.addEventListener('keydown', enableAudioOnFirstGesture);
+    function cleanupAutoPlayListeners() {
+      gestureEvents.forEach(evt => window.removeEventListener(evt, onFirstGesture, { passive: true }));
+    }
+    gestureEvents.forEach(evt => window.addEventListener(evt, onFirstGesture, { once: false, passive: true }));
   </script>
 </body>
 </html>
