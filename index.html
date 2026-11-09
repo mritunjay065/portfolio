@@ -397,7 +397,7 @@
           <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider">IIT Delhi Ideathon (16k+)</div>
         </div>
         <div class="puzzle-piece glass-card p-5 rounded-2xl text-center" data-scatter="card-4">
-          <div class="text-3xl font-extrabold text-blue-400 font-mono">4+</div>
+          <div class="text-3xl font-extrabold text-blue-400 font-mono">5+</div>
           <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider">AI & Web Projects</div>
         </div>
       </div>
@@ -563,14 +563,50 @@
         <div class="flex flex-wrap gap-2">
           <button onclick="filterProjects('all')" class="filter-btn active px-3.5 py-1.5 rounded-xl bg-zinc-800 text-xs font-mono text-slate-300 border border-zinc-700 transition-all">All</button>
           <button onclick="filterProjects('ai')" class="filter-btn px-3.5 py-1.5 rounded-xl bg-zinc-800 text-xs font-mono text-slate-300 border border-zinc-700 transition-all">AI / Healthcare</button>
+          <button onclick="filterProjects('security')" class="filter-btn px-3.5 py-1.5 rounded-xl bg-zinc-800 text-xs font-mono text-slate-300 border border-zinc-700 transition-all">Cybersecurity / PQC</button>
           <button onclick="filterProjects('cv')" class="filter-btn px-3.5 py-1.5 rounded-xl bg-zinc-800 text-xs font-mono text-slate-300 border border-zinc-700 transition-all">Computer Vision</button>
-          <button onclick="filterProjects('nlp')" class="filter-btn px-3.5 py-1.5 rounded-xl bg-zinc-800 text-xs font-mono text-slate-300 border border-zinc-700 transition-all">NLP / Security</button>
+          <button onclick="filterProjects('nlp')" class="filter-btn px-3.5 py-1.5 rounded-xl bg-zinc-800 text-xs font-mono text-slate-300 border border-zinc-700 transition-all">NLP</button>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projects-container">
 
-        <!-- Project 1: SwasthAI -->
+        <!-- Project 1: PQC-FedLoRA & Hallucination Mitigation Framework -->
+        <div class="puzzle-piece project-item ai security glass-card p-7 rounded-3xl flex flex-col justify-between group cursor-pointer border-cyan-500/30" onclick="openModal('hallucination')" data-scatter="proj-pqc">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-2.5 py-1 rounded-md">ALGOTHON'26 | NIST PQC & AppSec</span>
+              <span class="text-xs text-slate-400 font-mono">Feb 2026</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors flex items-center justify-between">
+              <span>PQC-FedLoRA: Quantum-Secure AI & Hallucination Remediation</span>
+              <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-5">
+              End-to-end zero-trust cybersecurity remediation and post-quantum federated framework. Evaluates red-team adversarial attacks (SQLi, IDOR, and lethal clinical LLM hallucinations) and deploys NIST FIPS 203/204 lattice cryptography (Kyber-768 & Dilithium3) with Shannon Entropy safety gates, achieving 100% exploit neutralization with &lt;1.5ms overhead.
+            </p>
+          </div>
+          <div>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-cyan-300 border border-zinc-700">Python</span>
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-cyan-300 border border-zinc-700">FastAPI</span>
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-cyan-300 border border-zinc-700">PyTorch</span>
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-cyan-300 border border-zinc-700">NIST FIPS 203/204</span>
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-cyan-300 border border-zinc-700">SQLite AppSec</span>
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-cyan-300 border border-zinc-700">Docker</span>
+            </div>
+            <div class="flex items-center gap-3 pt-4 border-t border-white/5 text-xs text-slate-400">
+              <span class="flex items-center gap-1 text-emerald-400 font-semibold"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> 100% Exploits Neutralized</span>
+              <span class="flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> &lt;1.5ms Lattice Overhead</span>
+              <a href="https://github.com/mritunjay065/hallucination" target="_blank" onclick="event.stopPropagation()" class="ml-auto flex items-center gap-1 text-cyan-400 hover:text-cyan-300 hover:underline">
+                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                <span>Repository</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: SwasthAI -->
         <div class="puzzle-piece project-item ai glass-card p-7 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="openModal('swasth')" data-scatter="proj-1">
           <div>
             <div class="flex items-center justify-between mb-3">
@@ -1162,6 +1198,18 @@
     // INTERACTIVE PROJECT MODAL
     // -------------------------------------------------------------
     const projectDetails = {
+      hallucination: {
+        title: "PQC-FedLoRA: Quantum-Secure Healthcare AI & Hallucination Remediation",
+        tag: "ALGOTHON'26 | Track 2: ALG-CYBER-02 • Feb 2026",
+        desc: "An end-to-end cybersecurity remediation and zero-trust framework designed to inspect vulnerable distributed AI applications, safely demonstrate red-team exploits on a live SQLite database, apply NIST-standardized post-quantum cryptographic and parameterized patches, and verify zero functional degradation.",
+        points: [
+          "Audited & remediated 3 critical attack vectors: Backend SQLi (CWE-89, CVSS 9.8), Broken Object-Level Authorization BOLA/IDOR (CWE-285, CVSS 8.5), and Unsanitized Generative Output/Lethal Hallucinations (CWE-20, CVSS 9.1).",
+          "Implemented Blue-Team defenses with NIST FIPS 203 ML-KEM (CRYSTALS-Kyber-768) and FIPS 204 ML-DSA (CRYSTALS-Dilithium3) tensor signatures with <1.5ms overhead.",
+          "Constructed a Pre-Display Safety Gate leveraging Shannon Token Entropy (H(X) = -Σ p log p) and Biomedical NLI checking against clinical consensus to eliminate lethal hallucinated contraindications.",
+          "Demonstrated 99.2% WAN payload compression (4.01 MB vs 13.35 GB) across federated nodes with 100% exploit neutralization."
+        ],
+        tech: ["Python", "FastAPI", "PyTorch", "NIST FIPS 203/204", "Kyber-768", "Dilithium3", "SQLite AppSec", "Docker", "Shannon Entropy"]
+      },
       swasth: {
         title: "SwasthAI: AI Diet & Recipe Assistant",
         tag: "Healthcare AI • Sep 2025",

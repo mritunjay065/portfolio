@@ -20,6 +20,7 @@ A modern, responsive, and high-performance developer portfolio showcasing machin
 
 | Project | Tech Stack | Highlights |
 | :--- | :--- | :--- |
+| **PQC-FedLoRA: Quantum-Secure AI & Hallucination Mitigation** | FastAPI, PyTorch, NIST FIPS 203/204, Kyber-768, Dilithium3, SQLite AppSec | Zero-trust AppSec remediation for SQLi, BOLA/IDOR, and clinical LLM hallucinations with Shannon Entropy safety gates. |
 | **SwasthAI: AI Diet & Recipe Assistant** | Flask, Python, TensorFlow, Scikit-learn, JS | Multi-modal nutrition planning, vectorized similarity search, and food classification. |
 | **CodeCure AI: Explainable Toxicity Prediction** | Python, React, Flask, XGBoost, LightGBM, RDKit, SHAP | Tox21 multi-endpoint prediction with interpretable SHAP, LIME, and DiCE alerts. |
 | **Person Re-Identification & Vision System** | React, Flask, OpenCV, YuNet CNN, SFace ResNet | Real-time face tracking, adaptive thresholding, and HSV Invisible Cloak. |
