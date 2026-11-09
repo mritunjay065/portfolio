@@ -40,8 +40,10 @@ A modern, responsive, and high-performance developer portfolio showcasing machin
 ## 🛠️ Tech Stack & Arsenal
 
 - **Languages:** C++, Python, JavaScript (ES6+), SQL, HTML5, CSS3
-- **AI / ML & Vision:** TensorFlow, Scikit-learn, OpenCV, XGBoost, LightGBM, SHAP, LIME, RDKit, NLP
-- **Full-Stack & Tools:** React.js, Node.js, Express.js, Flask REST APIs, Tailwind CSS, MongoDB, MySQL, Prisma ORM, Docker, Git, Postman
+- **AI / ML & Vision:** TensorFlow, PyTorch, Scikit-learn, OpenCV, XGBoost, LightGBM, SHAP, LIME, RDKit, NLP
+- **Full-Stack & Frameworks:** React.js, Node.js, Express.js, Flask REST APIs, FastAPI, Tailwind CSS, Docker
+- **Databases:** MySQL, MongoDB, SQLite, Prisma ORM
+- **Tools & Workflow:** Git & GitHub, VS Code, Jira, Framer Motion, Postman, Jupyter Notebook
 
 ---
 
