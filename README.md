@@ -41,7 +41,7 @@ A modern, responsive, and high-performance developer portfolio showcasing machin
 
 - **Languages:** C++, Python, JavaScript (ES6+), SQL, HTML5, CSS3
 - **AI / ML & Vision:** TensorFlow, Scikit-learn, OpenCV, XGBoost, LightGBM, SHAP, LIME, RDKit, NLP
-- **Full-Stack & Tools:** React.js, Node.js, Express.js, Flask REST APIs, Tailwind CSS, MongoDB, MySQL, Prisma ORM, Docker (Basics), Git, Postman
+- **Full-Stack & Tools:** React.js, Node.js, Express.js, Flask REST APIs, Tailwind CSS, MongoDB, MySQL, Prisma ORM, Docker, Git, Postman
 
 ---
 
