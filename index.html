@@ -307,15 +307,15 @@
       </nav>
 
       <div class="flex items-center gap-3">
-        <!-- Interactive Ambient Musical Tone Toggle -->
-        <button id="audio-toggle-btn" onclick="toggleAudio()" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-800/80 hover:bg-zinc-700/80 border border-cyan-500/30 text-xs font-mono text-cyan-300 transition-all shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/25" title="Toggle Background Ambient Tone">
+        <!-- Interactive Soundtrack Toggle -->
+        <button id="audio-toggle-btn" onclick="toggleAudio()" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-800/80 hover:bg-zinc-700/80 border border-cyan-500/30 text-xs font-mono text-cyan-300 transition-all shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/25" title="Toggle Soundtrack (Pirates of the Caribbean)">
           <div class="flex items-end gap-1 h-4">
             <span class="sound-bar paused"></span>
             <span class="sound-bar paused"></span>
             <span class="sound-bar paused"></span>
             <span class="sound-bar paused"></span>
           </div>
-          <span id="audio-btn-label" class="hidden sm:inline">Play Ambient Tone</span>
+          <span id="audio-btn-label" class="hidden sm:inline">Play Soundtrack</span>
         </button>
 
         <a href="#contact" class="hidden sm:inline-flex px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm transition-all duration-200 shadow-md shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:-translate-y-0.5">
@@ -1331,148 +1331,82 @@
     puzzlePieces.forEach(piece => puzzleObserver.observe(piece));
 
     // =============================================================
-    // AMBIENT MUSICAL TONE & PUZZLE SNAP SOUND ENGINE (WEB AUDIO API)
-    // Zero external audio file dependencies, pure procedural synthesis!
+    // AUDIO ENGINE (PIRATES OF THE CARIBBEAN SOUNDTRACK)
     // =============================================================
-    let audioCtx = null;
+    const bgAudio = new Audio('pirates_of_caribbean.mp3');
+    bgAudio.loop = true;
+    bgAudio.volume = 0.55;
+
     let isPlaying = false;
-    let masterGain = null;
-    let droneOsc1 = null;
-    let droneOsc2 = null;
-    let droneFilter = null;
-    let melodyTimer = null;
 
-    // Pentatonic ambient scale (D minor / F major peaceful cyberpunk chords)
-    // D3, F3, G3, A3, C4, D4, E4, F4, A4
-    const ambientFrequencies = [
-      146.83, 174.61, 196.00, 220.00, 261.63, 293.66, 329.63, 349.23, 440.00, 523.25
-    ];
-
-    function initAudioContext() {
-      if (!audioCtx) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContextClass();
-
-        masterGain = audioCtx.createGain();
-        masterGain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-        masterGain.connect(audioCtx.destination);
-
-        // Low-pass warm filter for cinematic ambient vibe
-        droneFilter = audioCtx.createBiquadFilter();
-        droneFilter.type = 'lowpass';
-        droneFilter.frequency.setValueAtTime(450, audioCtx.currentTime);
-        droneFilter.connect(masterGain);
-
-        // Warm analog drone pad
-        droneOsc1 = audioCtx.createOscillator();
-        droneOsc1.type = 'sine';
-        droneOsc1.frequency.setValueAtTime(110.00, audioCtx.currentTime); // A2 drone
-
-        droneOsc2 = audioCtx.createOscillator();
-        droneOsc2.type = 'triangle';
-        droneOsc2.frequency.setValueAtTime(164.81, audioCtx.currentTime); // E3 fifth
-
-        const droneSubGain = audioCtx.createGain();
-        droneSubGain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-
-        droneOsc1.connect(droneFilter);
-        droneOsc2.connect(droneFilter);
-        droneFilter.connect(droneSubGain);
-        droneSubGain.connect(masterGain);
-
-        droneOsc1.start();
-        droneOsc2.start();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-    }
-
-    // Play procedural crystal bell notes intermittently
-    function triggerAmbientBell() {
-      if (!isPlaying || !audioCtx) return;
-      const freq = ambientFrequencies[Math.floor(Math.random() * ambientFrequencies.length)];
-
-      const osc = audioCtx.createOscillator();
-      const noteGain = audioCtx.createGain();
-
-      osc.type = Math.random() > 0.4 ? 'sine' : 'triangle';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-      // Soft attack & long dreamy decay
-      const now = audioCtx.currentTime;
-      noteGain.gain.setValueAtTime(0.0001, now);
-      noteGain.gain.exponentialRampToValueAtTime(0.12, now + 0.15);
-      noteGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.2);
-
-      osc.connect(noteGain);
-      noteGain.connect(masterGain);
-
-      osc.start(now);
-      osc.stop(now + 3.5);
-
-      // Schedule next organic bell
-      const nextDelay = 1800 + Math.random() * 3200;
-      melodyTimer = setTimeout(triggerAmbientBell, nextDelay);
-    }
-
-    // Subtle tactile snap sound when puzzle piece slots into place
+    // Tactile sound effect on puzzle snap using lightweight Web Audio oscillator
+    let audioCtx = null;
     function playSnapSound() {
-      if (!audioCtx || !isPlaying) return;
+      if (!isPlaying) return;
       try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
         const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
 
-        // High crystal tick note
         const note = 587.33 + Math.random() * 200; // D5 range
         osc.type = 'sine';
         osc.frequency.setValueAtTime(note, now);
         osc.frequency.exponentialRampToValueAtTime(note * 1.5, now + 0.08);
 
         gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.linearRampToValueAtTime(0.06, now + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+        gain.gain.linearRampToValueAtTime(0.05, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
 
         osc.connect(gain);
         gain.connect(audioCtx.destination);
 
         osc.start(now);
-        osc.stop(now + 0.25);
-      } catch (err) {
-        // audio might not be active yet
-      }
+        osc.stop(now + 0.22);
+      } catch (err) {}
     }
 
-    // Toggle background musical ambient tone
+    // Toggle soundtrack
     function toggleAudio() {
-      initAudioContext();
       const bars = document.querySelectorAll('.sound-bar');
       const label = document.getElementById('audio-btn-label');
 
       if (!isPlaying) {
-        isPlaying = true;
-        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 1.2);
-        bars.forEach(b => b.classList.remove('paused'));
-        if (label) label.textContent = 'Mute Music';
-        triggerAmbientBell();
+        bgAudio.play().then(() => {
+          isPlaying = true;
+          bars.forEach(b => b.classList.remove('paused'));
+          if (label) label.textContent = 'Mute Music';
+        }).catch(err => {
+          console.log('Audio playback waiting for gesture:', err);
+        });
       } else {
+        bgAudio.pause();
         isPlaying = false;
-        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
         bars.forEach(b => b.classList.add('paused'));
-        if (label) label.textContent = 'Play Music';
-        if (melodyTimer) clearTimeout(melodyTimer);
+        if (label) label.textContent = 'Play Soundtrack';
       }
     }
 
-    // Auto-enable audio on first interaction if user clicks or scrolls
+    // Auto-enable audio on first user gesture
     let hasInteracted = false;
     function enableAudioOnFirstGesture() {
       if (hasInteracted) return;
       hasInteracted = true;
-      initAudioContext();
+      if (!isPlaying) {
+        bgAudio.play().then(() => {
+          isPlaying = true;
+          const bars = document.querySelectorAll('.sound-bar');
+          const label = document.getElementById('audio-btn-label');
+          bars.forEach(b => b.classList.remove('paused'));
+          if (label) label.textContent = 'Mute Music';
+        }).catch(() => {});
+      }
       window.removeEventListener('click', enableAudioOnFirstGesture);
       window.removeEventListener('keydown', enableAudioOnFirstGesture);
     }
