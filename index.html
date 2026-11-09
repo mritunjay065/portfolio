@@ -1305,23 +1305,27 @@
     }
     initPuzzleScattering();
 
-    // Check pieces on scroll and snap them into place
+    // Check pieces on scroll and snap them into place (or re-scatter when scrolling back out)
     const puzzleObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
+        const piece = entry.target;
         if (entry.isIntersecting) {
-          const piece = entry.target;
           if (!piece.classList.contains('assembled')) {
             piece.classList.add('assembled');
             piece.classList.add('snap-flash');
             playSnapSound();
             setTimeout(() => piece.classList.remove('snap-flash'), 650);
           }
+        } else {
+          // When scrolling away / scrolling back up, re-scatter the pieces
+          piece.classList.remove('assembled');
+          piece.classList.remove('snap-flash');
         }
       });
     }, {
       root: null,
-      threshold: 0.15,
-      rootMargin: '0px 0px -40px 0px'
+      threshold: 0.12,
+      rootMargin: '-20px 0px -20px 0px'
     });
 
     puzzlePieces.forEach(piece => puzzleObserver.observe(piece));
